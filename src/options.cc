@@ -484,27 +484,28 @@ Options::~Options ()
   if (_option_word & DEBUG)
     {
       fprintf (stderr, "\ndumping Options:"
-               "\nTYPE is........: %s"
-               "\nUPPERLOWER is..: %s"
-               "\nKRC is.........: %s"
-               "\nC is...........: %s"
-               "\nANSIC is.......: %s"
-               "\nCPLUSPLUS is...: %s"
-               "\nSEVENBIT is....: %s"
-               "\nLENTABLE is....: %s"
-               "\nCOMP is........: %s"
-               "\nCONST is.......: %s"
-               "\nENUM is........: %s"
-               "\nINCLUDE is.....: %s"
-               "\nGLOBAL is......: %s"
-               "\nNULLSTRINGS is.: %s"
-               "\nSHAREDLIB is...: %s"
-               "\nSWITCH is......: %s"
-               "\nNOTYPE is......: %s"
-               "\nDUP is.........: %s"
-               "\nNOLENGTH is....: %s"
-               "\nRANDOM is......: %s"
-               "\nDEBUG is.......: %s"
+               "\nTYPE is.........: %s"
+               "\nUPPERLOWER is...: %s"
+               "\nKRC is..........: %s"
+               "\nC is............: %s"
+               "\nANSIC is........: %s"
+               "\nCPLUSPLUS is....: %s"
+               "\nJAVASCRIPT is...: %s"
+               "\nSEVENBIT is.....: %s"
+               "\nLENTABLE is.....: %s"
+               "\nCOMP is.........: %s"
+               "\nCONST is........: %s"
+               "\nENUM is.........: %s"
+               "\nINCLUDE is......: %s"
+               "\nGLOBAL is.......: %s"
+               "\nNULLSTRINGS is..: %s"
+               "\nSHAREDLIB is....: %s"
+               "\nSWITCH is.......: %s"
+               "\nNOTYPE is.......: %s"
+               "\nDUP is..........: %s"
+               "\nNOLENGTH is.....: %s"
+               "\nRANDOM is.......: %s"
+               "\nDEBUG is........: %s"
                "\nlookup function name = %s"
                "\nhash function name = %s"
                "\nword list name = %s"
@@ -524,6 +525,7 @@ Options::~Options ()
                _option_word & C ? "enabled" : "disabled",
                _option_word & ANSIC ? "enabled" : "disabled",
                _option_word & CPLUSPLUS ? "enabled" : "disabled",
+               _option_word & JAVASCRIPT ? "enabled" : "disabled",
                _option_word & SEVENBIT ? "enabled" : "disabled",
                _option_word & LENTABLE ? "enabled" : "disabled",
                _option_word & COMP ? "enabled" : "disabled",
@@ -570,7 +572,7 @@ Options::set_language (const char *language)
   if (_language == NULL)
     {
       _language = language;
-      _option_word &= ~(KRC | C | ANSIC | CPLUSPLUS);
+      _option_word &= ~(KRC | C | ANSIC | CPLUSPLUS | JAVASCRIPT);
       if (!strcmp (language, "KR-C"))
         _option_word |= KRC;
       else if (!strcmp (language, "C"))
@@ -579,6 +581,8 @@ Options::set_language (const char *language)
         _option_word |= ANSIC;
       else if (!strcmp (language, "C++"))
         _option_word |= CPLUSPLUS;
+      else if (!strcmp (language, "JavaScript"))
+        _option_word |= JAVASCRIPT;
       else
         {
           fprintf (stderr,

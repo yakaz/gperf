@@ -59,7 +59,7 @@ public:
   /* Generates the hash function and the key word recognizer function.  */
   void                  output ();
 
-private:
+protected:
 
   /* Computes the minimum and maximum hash values, and stores them
      in _min_hash_value and _max_hash_value.  */

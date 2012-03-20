@@ -56,60 +56,63 @@ enum Option_Type
   /* Generate C++ code: prototypes, const, class, inline, enum.  */
   CPLUSPLUS    = 1 << 5,
 
+  /* Generate JavaScript code. */
+  JAVASCRIPT   = 1 << 6,
+
   /* --- Details in the output code --- */
 
   /* Assume 7-bit, not 8-bit, characters.  */
-  SEVENBIT     = 1 << 6,
+  SEVENBIT     = 1 << 7,
 
   /* Generate a length table for string comparison.  */
-  LENTABLE     = 1 << 7,
+  LENTABLE     = 1 << 8,
 
   /* Generate strncmp rather than strcmp.  */
-  COMP         = 1 << 8,
+  COMP         = 1 << 9,
 
   /* Make the generated tables readonly (const).  */
-  CONST        = 1 << 9,
+  CONST        = 1 << 10,
 
   /* Use enum for constants.  */
-  ENUM         = 1 << 10,
+  ENUM         = 1 << 11,
 
   /* Generate #include statements.  */
-  INCLUDE      = 1 << 11,
+  INCLUDE      = 1 << 12,
 
   /* Make the keyword table a global variable.  */
-  GLOBAL       = 1 << 12,
+  GLOBAL       = 1 << 13,
 
   /* Use NULL strings instead of empty strings for empty table entries.  */
-  NULLSTRINGS  = 1 << 13,
+  NULLSTRINGS  = 1 << 14,
 
   /* Optimize for position-independent code.  */
-  SHAREDLIB    = 1 << 14,
+  SHAREDLIB    = 1 << 15,
 
   /* Generate switch output to save space.  */
-  SWITCH       = 1 << 15,
+  SWITCH       = 1 << 16,
 
   /* Don't include user-defined type definition in output -- it's already
      defined elsewhere.  */
-  NOTYPE       = 1 << 16,
+  NOTYPE       = 1 << 17,
 
   /* --- Algorithm employed by gperf --- */
 
   /* Use the given key positions.  */
-  POSITIONS    = 1 << 17,
+  POSITIONS    = 1 << 18,
 
   /* Handle duplicate hash values for keywords.  */
-  DUP          = 1 << 18,
+  DUP          = 1 << 19,
 
   /* Don't include keyword length in hash computations.  */
-  NOLENGTH     = 1 << 19,
+  NOLENGTH     = 1 << 20,
 
   /* Randomly initialize the associated values table.  */
-  RANDOM       = 1 << 20,
+  RANDOM       = 1 << 21,
 
   /* --- Informative output --- */
 
   /* Enable debugging (prints diagnostics to stderr).  */
-  DEBUG        = 1 << 21
+  DEBUG        = 1 << 22
 };
 
 /* Class manager for gperf program Options.  */
