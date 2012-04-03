@@ -166,11 +166,8 @@ OutputJavascript::output_hash_function () const
       else
         {
           /* We've got to use the correct, but brute force, technique.  */
-          printf ("  var hval = %s;\n\n"
-                  "  switch (%s) {\n"
-                  "  default:\n",
-                  _hash_includes_len ? "str.length" : "0",
-                  _hash_includes_len ? "hval" : "str.length");
+          printf ("  var hval = %s;\n\n",
+                  _hash_includes_len ? "str.length" : "0");
 
           while (key_pos != Positions::LASTCHAR && key_pos >= _max_key_len)
             if ((key_pos = iter.next ()) == PositionIterator::EOS)
@@ -181,11 +178,10 @@ OutputJavascript::output_hash_function () const
               int i = key_pos;
               do
                 {
-                  if (i > key_pos)
-                    printf ("    /*FALLTHROUGH*/\n"); /* Pacify lint.  */
                   for ( ; i > key_pos; i--)
-                    printf ("  case %d:\n", i);
+                    ;
 
+                  printf ("  if (hval >= %d)\n", key_pos + 1);
                   printf ("    hval += ");
                   output_asso_values_ref (key_pos);
                   printf (";\n");
@@ -193,16 +189,9 @@ OutputJavascript::output_hash_function () const
                   key_pos = iter.next ();
                 }
               while (key_pos != PositionIterator::EOS && key_pos != Positions::LASTCHAR);
-
-              if (i >= _min_key_len)
-                printf ("    /*FALLTHROUGH*/\n"); /* Pacify lint.  */
-              for ( ; i >= _min_key_len; i--)
-                printf ("  case %d:\n", i);
             }
 
-          printf ("    break;\n"
-                  "  }\n"
-                  "  return hval");
+          printf ("  return hval");
           if (key_pos == Positions::LASTCHAR)
             {
               printf (" + ");
