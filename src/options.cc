@@ -122,8 +122,8 @@ Options::long_usage (FILE * stream)
   fprintf (stream,
            "  -L, --language=LANGUAGE-NAME\n"
            "                         Generates code in the specified language. Languages\n"
-           "                         handled are currently C++, ANSI-C, C, and KR-C. The\n"
-           "                         default is ANSI-C.\n");
+           "                         handled are currently C++, ANSI-C, C, KR-C and\n"
+           "                         JavaScript. The default is ANSI-C.\n");
   fprintf (stream, "\n");
   fprintf (stream,
            "Details in the output code:\n");
@@ -142,6 +142,9 @@ Options::long_usage (FILE * stream)
            "  -N, --lookup-function-name=NAME\n"
            "                         Specify name of generated lookup function. Default\n"
            "                         name is 'in_word_set'.\n");
+  fprintf (stream,
+           "  -X, --no-lookup-function\n"
+           "                         Do not output lookup function.\n");
   fprintf (stream,
            "  -Z, --class-name=NAME  Specify name of generated C++ class. Default name is\n"
            "                         'Perfect_Hash'.\n");
@@ -502,6 +505,7 @@ Options::~Options ()
                "\nSHAREDLIB is....: %s"
                "\nSWITCH is.......: %s"
                "\nNOTYPE is.......: %s"
+               "\nNOLOOKUPFUNC is.: %s"
                "\nDUP is..........: %s"
                "\nNOLENGTH is.....: %s"
                "\nRANDOM is.......: %s"
@@ -537,6 +541,7 @@ Options::~Options ()
                _option_word & SHAREDLIB ? "enabled" : "disabled",
                _option_word & SWITCH ? "enabled" : "disabled",
                _option_word & NOTYPE ? "enabled" : "disabled",
+               _option_word & NOLOOKUPFUNC ? "enabled" : "disabled",
                _option_word & DUP ? "enabled" : "disabled",
                _option_word & NOLENGTH ? "enabled" : "disabled",
                _option_word & RANDOM ? "enabled" : "disabled",
@@ -700,6 +705,7 @@ static const struct option long_options[] =
   { "hash-function-name", required_argument, NULL, 'H' },
   { "lookup-fn-name", required_argument, NULL, 'N' }, /* backward compatibility */
   { "lookup-function-name", required_argument, NULL, 'N' },
+  { "no-lookup-function", no_argument, NULL, 'X' },
   { "class-name", required_argument, NULL, 'Z' },
   { "seven-bit", no_argument, NULL, '7' },
   { "compare-strncmp", no_argument, NULL, 'c' },
@@ -745,7 +751,7 @@ Options::parse_options (int argc, char *argv[])
 
   while ((option_char =
             getopt_long (_argument_count, _argument_vector,
-                         "acCdDe:Ef:F:gGhH:i:Ij:k:K:lL:m:nN:oOpPQ:rs:S:tTvW:Z:7",
+                         "acCdDe:Ef:F:gGhH:i:Ij:k:K:lL:m:nN:oOpPQ:rs:S:tTvW:XZ:7",
                          long_options, NULL))
          != -1)
     {
@@ -1032,6 +1038,11 @@ There is NO WARRANTY, to the extent permitted by law.\n\
         case 'W':               /* Sets the name for the hash table array.  */
           {
             _wordlist_name = /*getopt*/optarg;
+            break;
+          }
+        case 'X':
+          {
+            _option_word |= NOLOOKUPFUNC;
             break;
           }
         case 'Z':               /* Set the class name.  */

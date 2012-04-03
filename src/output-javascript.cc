@@ -545,10 +545,12 @@ OutputJavascript::output ()
 
   output_hash_function ();
 
-  if (option[GLOBAL])
-    output_lookup_tables ();
+  if (!option[NOLOOKUPFUNC]) {
+    if (option[GLOBAL])
+      output_lookup_tables ();
 
-  output_lookup_function ();
+    output_lookup_function ();
+  }
 
   fflush (stdout);
 }

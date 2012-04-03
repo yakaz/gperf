@@ -95,24 +95,27 @@ enum Option_Type
      defined elsewhere.  */
   NOTYPE       = 1 << 17,
 
+  /* Do not generate the in_word_set function. */
+  NOLOOKUPFUNC = 1 << 18,
+
   /* --- Algorithm employed by gperf --- */
 
   /* Use the given key positions.  */
-  POSITIONS    = 1 << 18,
+  POSITIONS    = 1 << 19,
 
   /* Handle duplicate hash values for keywords.  */
-  DUP          = 1 << 19,
+  DUP          = 1 << 20,
 
   /* Don't include keyword length in hash computations.  */
-  NOLENGTH     = 1 << 20,
+  NOLENGTH     = 1 << 21,
 
   /* Randomly initialize the associated values table.  */
-  RANDOM       = 1 << 21,
+  RANDOM       = 1 << 22,
 
   /* --- Informative output --- */
 
   /* Enable debugging (prints diagnostics to stderr).  */
-  DEBUG        = 1 << 22
+  DEBUG        = 1 << 23
 };
 
 /* Class manager for gperf program Options.  */
