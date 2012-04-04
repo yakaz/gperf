@@ -12,23 +12,23 @@
 OutputJavascript::OutputJavascript (KeywordExt_List *head,
                                     const char *struct_decl,
                                     unsigned int struct_decl_lineno,
-				    const char *return_type,
+                                    const char *return_type,
                                     const char *struct_tag,
-				    const char *verbatim_declarations,
+                                    const char *verbatim_declarations,
                                     const char *verbatim_declarations_end,
                                     unsigned int verbatim_declarations_lineno,
                                     const char *verbatim_code,
-				    const char *verbatim_code_end,
+                                    const char *verbatim_code_end,
                                     unsigned int verbatim_code_lineno,
-				    bool charset_dependent,
+                                    bool charset_dependent,
                                     int total_keys,
-				    int max_key_len, int min_key_len,
+                                    int max_key_len, int min_key_len,
                                     bool hash_includes_len,
-				    const Positions& positions,
+                                    const Positions& positions,
                                     const unsigned int *alpha_inc,
-				    int total_duplicates,
+                                    int total_duplicates,
                                     unsigned int alpha_size,
-				    const int *asso_values)
+                                    const int *asso_values)
   : Output(head, struct_decl, struct_decl_lineno, return_type, struct_tag,
       verbatim_declarations, verbatim_declarations_end,
       verbatim_declarations_lineno, verbatim_code, verbatim_code_end,
@@ -45,18 +45,36 @@ OutputJavascript::output_constants (const char *indent) const
 {
   const char *prefix = option.get_constants_prefix ();
 
-  printf (
-      "%svar %sTOTAL_KEYWORDS  = %d;\n"
-      "%svar %sMIN_WORD_LENGTH = %d;\n"
-      "%svar %sMAX_WORD_LENGTH = %d;\n"
-      "%svar %sMIN_HASH_VALUE  = %d;\n"
-      "%svar %sMAX_HASH_VALUE  = %d;\n"
-      "\n",
-      indent, prefix, _total_keys,
-      indent, prefix, _min_key_len,
-      indent, prefix, _max_key_len,
-      indent, prefix, _min_hash_value,
-      indent, prefix, _max_hash_value);
+  if (option[GLOBAL])
+    {
+      printf (
+          "%s%sTOTAL_KEYWORDS:  %d,\n"
+          "%s%sMIN_WORD_LENGTH: %d,\n"
+          "%s%sMAX_WORD_LENGTH: %d,\n"
+          "%s%sMIN_HASH_VALUE:  %d,\n"
+          "%s%sMAX_HASH_VALUE:  %d,\n"
+          "\n",
+          indent, prefix, _total_keys,
+          indent, prefix, _min_key_len,
+          indent, prefix, _max_key_len,
+          indent, prefix, _min_hash_value,
+          indent, prefix, _max_hash_value);
+    }
+  else
+    {
+      printf (
+          "%svar %sTOTAL_KEYWORDS  = %d,\n"
+          "%svar %sMIN_WORD_LENGTH = %d,\n"
+          "%svar %sMAX_WORD_LENGTH = %d,\n"
+          "%svar %sMIN_HASH_VALUE  = %d,\n"
+          "%svar %sMAX_HASH_VALUE  = %d,\n"
+          "\n",
+          indent, prefix, _total_keys,
+          indent, prefix, _min_key_len,
+          indent, prefix, _max_key_len,
+          indent, prefix, _min_hash_value,
+          indent, prefix, _max_hash_value);
+    }
 }
 
 /* ------------------------------------------------------------------------- */
@@ -83,12 +101,12 @@ OutputJavascript::output_asso_values_ref (int pos) const
 void
 OutputJavascript::output_hash_function () const
 {
-  printf ("var %s = function(str) {\n", option.get_hash_name ());
+  printf ("  %s: function(str) {\n", option.get_hash_name ());
 
   /* First the asso_values array.  */
   if (_key_positions.get_size() > 0)
     {
-      printf ("  var asso_values = [");
+      printf ("    var asso_values = [");
 
       const int columns = 10;
 
@@ -102,18 +120,18 @@ OutputJavascript::output_hash_function () const
           if (count > 0)
             printf (",");
           if ((count % columns) == 0)
-            printf ("\n   ");
+            printf ("\n     ");
           printf ("%*d", field_width, _asso_values[count]);
         }
 
       printf ("\n"
-              "  ];\n");
+              "    ];\n");
     }
 
   if (_key_positions.get_size() == 0)
     {
       /* Trivial case: No key positions at all.  */
-      printf ("  return %s;\n",
+      printf ("    return %s;\n",
               _hash_includes_len ? "str.length" : "0");
     }
   else
@@ -134,7 +152,7 @@ OutputJavascript::output_hash_function () const
              are added as 'int's even though the asso_values array may
              contain 'unsigned char's or 'unsigned short's.  */
 
-          printf ("  return %s",
+          printf ("    return %s",
                   _hash_includes_len ? "str.length + " : "");
 
           if (_key_positions.get_size() == 2
@@ -166,7 +184,7 @@ OutputJavascript::output_hash_function () const
       else
         {
           /* We've got to use the correct, but brute force, technique.  */
-          printf ("  var hval = %s;\n\n",
+          printf ("    var hval = %s;\n\n",
                   _hash_includes_len ? "str.length" : "0");
 
           while (key_pos != Positions::LASTCHAR && key_pos >= _max_key_len)
@@ -181,8 +199,8 @@ OutputJavascript::output_hash_function () const
                   for ( ; i > key_pos; i--)
                     ;
 
-                  printf ("  if (hval >= %d)\n", key_pos + 1);
-                  printf ("    hval += ");
+                  printf ("    if (hval >= %d)\n", key_pos + 1);
+                  printf ("      hval += ");
                   output_asso_values_ref (key_pos);
                   printf (";\n");
 
@@ -191,7 +209,7 @@ OutputJavascript::output_hash_function () const
               while (key_pos != PositionIterator::EOS && key_pos != Positions::LASTCHAR);
             }
 
-          printf ("  return hval");
+          printf ("    return hval");
           if (key_pos == Positions::LASTCHAR)
             {
               printf (" + ");
@@ -201,7 +219,7 @@ OutputJavascript::output_hash_function () const
         }
     }
 
-  printf ("}\n\n");
+  printf ("  },\n");
 }
 
 /* ------------------------------------------------------------------------- */
@@ -298,7 +316,7 @@ output_keyword_blank_entries (int count, const char *indent)
 void
 OutputJavascript::output_keyword_table () const
 {
-  const char *indent  = option[GLOBAL] ? "" : "  ";
+  const char *indent  = option[GLOBAL] ? "" : "    ";
   int index;
   KeywordExt_List *temp;
 
@@ -456,8 +474,8 @@ output_switches (KeywordExt_List *list, int num_switches, int size, int min_hash
 void
 OutputJavascript::output_lookup_function_body () const
 {
-  printf ("  if (str.length <= %sMAX_WORD_LENGTH && str.length >= %sMIN_WORD_LENGTH) {\n"
-          "    var key = %s(str);\n\n",
+  printf ("    if (str.length <= %sMAX_WORD_LENGTH && str.length >= %sMIN_WORD_LENGTH) {\n"
+          "      var key = %s(str);\n\n",
           option.get_constants_prefix (), option.get_constants_prefix (),
           option.get_hash_name ());
 
@@ -468,21 +486,21 @@ OutputJavascript::output_lookup_function_body () const
       if (num_switches > switch_size)
         num_switches = switch_size;
 
-      printf ("    if (key <= %sMAX_HASH_VALUE && key >= %sMIN_HASH_VALUE) {\n"
-              "      var resword;\n\n",
+      printf ("      if (key <= %sMAX_HASH_VALUE && key >= %sMIN_HASH_VALUE) {\n"
+              "        var resword;\n\n",
               option.get_constants_prefix (), option.get_constants_prefix ());
 
       output_switches (_head, num_switches, switch_size, _min_hash_value, _max_hash_value, 6);
 
-      printf ("      return (resword && str == resword);\n");
-      printf ("    }\n");
+      printf ("        return (resword && str == resword);\n");
+      printf ("      }\n");
     }
   else
     {
-      printf ("    if (key <= %sMAX_HASH_VALUE && key >= 0) {\n",
+      printf ("      if (key <= %sMAX_HASH_VALUE && key >= 0) {\n",
               option.get_constants_prefix ());
 
-      int indent = 4;
+      int indent = 6;
       printf ("%*s  var s = %s[key]",
               indent, "", option.get_wordlist_name ());
 
@@ -497,8 +515,8 @@ OutputJavascript::output_lookup_function_body () const
       printf ("%*s}\n",
               indent, "");
     }
-  printf ("  }\n"
-          "  return false;\n");
+  printf ("    }\n"
+          "    return false;\n");
 }
 
 /* Generates Javascript code for the lookup function.  */
@@ -506,19 +524,17 @@ OutputJavascript::output_lookup_function_body () const
 void
 OutputJavascript::output_lookup_function () const
 {
-  printf ("var %s = function(str) {\n", option.get_function_name ());
+  printf ("\n  %s: function(str) {\n", option.get_function_name ());
 
-  if (option[ENUM] && !option[GLOBAL])
-    {
-      output_constants ("  ");
-    }
+  if (!option[GLOBAL])
+      output_constants ("    ");
 
   if (!option[GLOBAL])
     output_lookup_tables ();
 
   output_lookup_function_body ();
 
-  printf ("}\n");
+  printf ("  },\n");
 }
 
 void
@@ -541,7 +557,10 @@ OutputJavascript::output ()
     }
   printf ("\n");
 
-  output_constants ("");
+  printf ("var %s = {\n", option.get_class_name ());
+
+  if (option[GLOBAL])
+    output_constants ("  ");
 
   output_hash_function ();
 
@@ -551,6 +570,8 @@ OutputJavascript::output ()
 
     output_lookup_function ();
   }
+
+  printf ("};\n");
 
   fflush (stdout);
 }
