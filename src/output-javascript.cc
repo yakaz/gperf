@@ -101,7 +101,8 @@ OutputJavascript::output_asso_values_ref (int pos) const
 void
 OutputJavascript::output_hash_function () const
 {
-  printf ("  %s: function(str) {\n", option.get_hash_name ());
+  printf ("  %s: function (str) {\n", option.get_hash_name ());
+  printf ("    \"use strict\";\n");
 
   /* First the asso_values array.  */
   if (_key_positions.get_size() > 0)
@@ -199,10 +200,11 @@ OutputJavascript::output_hash_function () const
                   for ( ; i > key_pos; i--)
                     ;
 
-                  printf ("    if (hval >= %d)\n", key_pos + 1);
+                  printf ("    if (hval >= %d) {\n", key_pos + 1);
                   printf ("      hval += ");
                   output_asso_values_ref (key_pos);
                   printf (";\n");
+                  printf ("    }\n");
 
                   key_pos = iter.next ();
                 }
@@ -219,7 +221,10 @@ OutputJavascript::output_hash_function () const
         }
     }
 
-  printf ("  },\n");
+  if (option[NOLOOKUPFUNC])
+    printf ("  }\n");
+  else
+    printf ("  },\n");
 }
 
 /* ------------------------------------------------------------------------- */
@@ -304,7 +309,7 @@ output_keyword_blank_entries (int count, const char *indent)
             printf (", ");
         }
       if (option[NULLSTRINGS])
-        printf ("0");
+        printf ("");
       else
         printf ("\"\"");
       column++;
@@ -316,12 +321,16 @@ output_keyword_blank_entries (int count, const char *indent)
 void
 OutputJavascript::output_keyword_table () const
 {
-  const char *indent  = option[GLOBAL] ? "" : "    ";
+  const char *indent  = option[GLOBAL] ? "  " : "    ";
   int index;
   KeywordExt_List *temp;
 
-  printf ("%svar %s = [\n",
-          indent, option.get_wordlist_name ());
+  if (option[GLOBAL])
+    printf ("\n%s%s: [\n",
+            indent, option.get_wordlist_name ());
+  else
+    printf ("%svar %s = [\n",
+            indent, option.get_wordlist_name ());
 
   /* Generate an array of reserved words at appropriate locations.  */
 
@@ -355,7 +364,10 @@ OutputJavascript::output_keyword_table () const
   if (index > 0)
     printf ("\n");
 
-  printf ("%s];\n\n", indent);
+  if (option[GLOBAL])
+    printf ("%s],\n", indent);
+  else
+    printf ("%s];\n", indent);
 }
 
 /* Generate all the tables needed for the lookup function.  */
@@ -524,23 +536,26 @@ OutputJavascript::output_lookup_function_body () const
 void
 OutputJavascript::output_lookup_function () const
 {
-  printf ("\n  %s: function(str) {\n", option.get_function_name ());
+  printf ("\n  %s: function (str) {\n", option.get_function_name ());
+  printf ("    \"use strict\";\n");
 
   if (!option[GLOBAL])
       output_constants ("    ");
 
   if (!option[GLOBAL])
-    output_lookup_tables ();
+    {
+      output_lookup_tables ();
+      printf ("\n");
+    }
 
   output_lookup_function_body ();
 
-  printf ("  },\n");
+  printf ("  }\n");
 }
 
 void
 OutputJavascript::output ()
 {
-
   compute_min_max ();
 
   printf (
@@ -557,7 +572,7 @@ OutputJavascript::output ()
     }
   printf ("\n");
 
-  printf ("var %s = {\n", option.get_class_name ());
+  printf ("%s = {\n", option.get_class_name ());
 
   if (option[GLOBAL])
     output_constants ("  ");
