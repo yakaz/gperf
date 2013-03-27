@@ -27,8 +27,8 @@ Input file interpretation:
 Language for the output code:
   -L, --language=LANGUAGE-NAME
                          Generates code in the specified language. Languages
-                         handled are currently C++, ANSI-C, C, and KR-C. The
-                         default is ANSI-C.
+                         handled are currently C++, ANSI-C, C, KR-C and
+                         JavaScript. The default is ANSI-C.
 
 Details in the output code:
   -K, --slot-name=NAME   Select name of the keyword component in the keyword
@@ -42,6 +42,8 @@ Details in the output code:
   -N, --lookup-function-name=NAME
                          Specify name of generated lookup function. Default
                          name is 'in_word_set'.
+  -X, --no-lookup-function
+                         Do not output lookup function.
   -Z, --class-name=NAME  Specify name of generated C++ class. Default name is
                          'Perfect_Hash'.
   -7, --seven-bit        Assume 7-bit characters.
