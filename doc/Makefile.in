@@ -107,7 +107,7 @@ gperf_toc.html : $(srcdir)/gperf.texi $(srcdir)/gpl-3.0.texi
 man : gperf.1
 
 gperf.1 gperf.1-update :
-	./help2man --name='generate a perfect hash function from a key set' --section=1 ../src/gperf > gperf.1
+	$(srcdir)/help2man --name='generate a perfect hash function from a key set' --section=1 ../src/gperf > gperf.1
 
 gperf.1-update : force
 
@@ -116,7 +116,7 @@ install : all force
 	$(MKINSTALLDIRS) $(DESTDIR)$(infodir)
 	$(INSTALL_DATA) $(srcdir)/gperf.info $(DESTDIR)$(infodir)/gperf.info
 	$(MKINSTALLDIRS) $(DESTDIR)$(man1dir)
-	$(INSTALL_DATA) $(srcdir)/gperf.1 $(DESTDIR)$(man1dir)/gperf.1
+	$(INSTALL_DATA) gperf.1 $(DESTDIR)$(man1dir)/gperf.1
 #	$(MKINSTALLDIRS) $(DESTDIR)$(dvidir)
 #	$(INSTALL_DATA) $(srcdir)/gperf.dvi $(DESTDIR)$(dvidir)/gperf.dvi
 #	$(MKINSTALLDIRS) $(DESTDIR)$(psdir)
