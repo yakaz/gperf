@@ -465,7 +465,7 @@ output_switches (KeywordExt_List *list, int num_switches, int size, int min_hash
     }
 }
 
-/* Generates Javascript code to perform the keyword lookup.  */
+/* Generates JavaScript code to perform the keyword lookup.  */
 
 void
 OutputJavascript::output_lookup_function_body () const
@@ -515,7 +515,7 @@ OutputJavascript::output_lookup_function_body () const
           "    return false;\n");
 }
 
-/* Generates Javascript code for the lookup function.  */
+/* Generates JavaScript code for the lookup function.  */
 
 void
 OutputJavascript::output_lookup_function () const

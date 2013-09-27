@@ -49,10 +49,10 @@ protected:
   /* Generate all the tables needed for the lookup function.  */
   void                  output_lookup_tables () const;
 
-  /* Generates Javascript code to perform the keyword lookup.  */
+  /* Generates JavaScript code to perform the keyword lookup.  */
   void                  output_lookup_function_body () const;
 
-  /* Generates Javascript code for the lookup function.  */
+  /* Generates JavaScript code for the lookup function.  */
   void                  output_lookup_function () const;
 };
 
