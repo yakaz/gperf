@@ -2024,8 +2024,9 @@ Output::output ()
   else if (option[CPLUSPLUS])
     printf ("C++");
   printf (" code produced by gperf version %s */\n", version_string);
+  printf ("/* ");
   option.print_options ();
-  printf ("\n");
+  printf (" */\n");
   if (!option[POSITIONS])
     {
       printf ("/* Computed positions: -k'");

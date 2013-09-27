@@ -122,8 +122,8 @@ Options::long_usage (FILE * stream)
   fprintf (stream,
            "  -L, --language=LANGUAGE-NAME\n"
            "                         Generates code in the specified language. Languages\n"
-           "                         handled are currently C++, ANSI-C, C, KR-C and\n"
-           "                         JavaScript. The default is ANSI-C.\n");
+           "                         handled are currently C++, ANSI-C, C, KR-C, JavaScript\n"
+           "                         and Lua. The default is ANSI-C.\n");
   fprintf (stream, "\n");
   fprintf (stream,
            "Details in the output code:\n");
@@ -277,7 +277,7 @@ Options::long_usage (FILE * stream)
 void
 Options::print_options () const
 {
-  printf ("/* Command-line: ");
+  printf ("Command-line: ");
 
   for (int i = 0; i < _argument_count; i++)
     {
@@ -336,10 +336,9 @@ Options::print_options () const
       else
         printf ("%s", arg);
 
-      printf (" ");
+      if (i != _argument_count - 1)
+        printf (" ");
     }
-
-  printf (" */");
 }
 
 /* ------------------------------------------------------------------------- */
@@ -494,6 +493,7 @@ Options::~Options ()
                "\nANSIC is........: %s"
                "\nCPLUSPLUS is....: %s"
                "\nJAVASCRIPT is...: %s"
+               "\nLUA is..........: %s"
                "\nSEVENBIT is.....: %s"
                "\nLENTABLE is.....: %s"
                "\nCOMP is.........: %s"
@@ -530,6 +530,7 @@ Options::~Options ()
                _option_word & ANSIC ? "enabled" : "disabled",
                _option_word & CPLUSPLUS ? "enabled" : "disabled",
                _option_word & JAVASCRIPT ? "enabled" : "disabled",
+               _option_word & LUA ? "enabled" : "disabled",
                _option_word & SEVENBIT ? "enabled" : "disabled",
                _option_word & LENTABLE ? "enabled" : "disabled",
                _option_word & COMP ? "enabled" : "disabled",
@@ -577,7 +578,7 @@ Options::set_language (const char *language)
   if (_language == NULL)
     {
       _language = language;
-      _option_word &= ~(KRC | C | ANSIC | CPLUSPLUS | JAVASCRIPT);
+      _option_word &= ~(KRC | C | ANSIC | CPLUSPLUS | JAVASCRIPT | LUA);
       if (!strcmp (language, "KR-C"))
         _option_word |= KRC;
       else if (!strcmp (language, "C"))
@@ -588,6 +589,8 @@ Options::set_language (const char *language)
         _option_word |= CPLUSPLUS;
       else if (!strcmp (language, "JavaScript"))
         _option_word |= JAVASCRIPT;
+      else if (!strcmp (language, "Lua"))
+        _option_word |= LUA;
       else
         {
           fprintf (stderr,

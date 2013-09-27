@@ -26,6 +26,7 @@
 #include "search.h"
 #include "output.h"
 #include "output-javascript.h"
+#include "output-lua.h"
 
 
 /* ------------------------------------------------------------------------- */
@@ -113,6 +114,31 @@ main (int argc, char *argv[])
                                         searcher._total_duplicates,
                                         searcher._alpha_size,
                                         searcher._asso_values);
+            outputter.output ();
+          }
+        else if (option[LUA])
+          {
+            OutputLua outputter (searcher._head,
+                                 inputter._struct_decl,
+                                 inputter._struct_decl_lineno,
+                                 inputter._return_type,
+                                 inputter._struct_tag,
+                                 inputter._verbatim_declarations,
+                                 inputter._verbatim_declarations_end,
+                                 inputter._verbatim_declarations_lineno,
+                                 inputter._verbatim_code,
+                                 inputter._verbatim_code_end,
+                                 inputter._verbatim_code_lineno,
+                                 inputter._charset_dependent,
+                                 searcher._total_keys,
+                                 searcher._max_key_len,
+                                 searcher._min_key_len,
+                                 searcher._hash_includes_len,
+                                 searcher._key_positions,
+                                 searcher._alpha_inc,
+                                 searcher._total_duplicates,
+                                 searcher._alpha_size,
+                                 searcher._asso_values);
             outputter.output ();
           }
         else

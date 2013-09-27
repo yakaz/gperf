@@ -59,63 +59,66 @@ enum Option_Type
   /* Generate JavaScript code. */
   JAVASCRIPT   = 1 << 6,
 
+  /* Generate Lua code. */
+  LUA          = 1 << 7,
+
   /* --- Details in the output code --- */
 
   /* Assume 7-bit, not 8-bit, characters.  */
-  SEVENBIT     = 1 << 7,
+  SEVENBIT     = 1 << 8,
 
   /* Generate a length table for string comparison.  */
-  LENTABLE     = 1 << 8,
+  LENTABLE     = 1 << 9,
 
   /* Generate strncmp rather than strcmp.  */
-  COMP         = 1 << 9,
+  COMP         = 1 << 10,
 
   /* Make the generated tables readonly (const).  */
-  CONST        = 1 << 10,
+  CONST        = 1 << 11,
 
   /* Use enum for constants.  */
-  ENUM         = 1 << 11,
+  ENUM         = 1 << 12,
 
   /* Generate #include statements.  */
-  INCLUDE      = 1 << 12,
+  INCLUDE      = 1 << 13,
 
   /* Make the keyword table a global variable.  */
-  GLOBAL       = 1 << 13,
+  GLOBAL       = 1 << 14,
 
   /* Use NULL strings instead of empty strings for empty table entries.  */
-  NULLSTRINGS  = 1 << 14,
+  NULLSTRINGS  = 1 << 15,
 
   /* Optimize for position-independent code.  */
-  SHAREDLIB    = 1 << 15,
+  SHAREDLIB    = 1 << 16,
 
   /* Generate switch output to save space.  */
-  SWITCH       = 1 << 16,
+  SWITCH       = 1 << 17,
 
   /* Don't include user-defined type definition in output -- it's already
      defined elsewhere.  */
-  NOTYPE       = 1 << 17,
+  NOTYPE       = 1 << 18,
 
   /* Do not generate the in_word_set function. */
-  NOLOOKUPFUNC = 1 << 18,
+  NOLOOKUPFUNC = 1 << 19,
 
   /* --- Algorithm employed by gperf --- */
 
   /* Use the given key positions.  */
-  POSITIONS    = 1 << 19,
+  POSITIONS    = 1 << 20,
 
   /* Handle duplicate hash values for keywords.  */
-  DUP          = 1 << 20,
+  DUP          = 1 << 21,
 
   /* Don't include keyword length in hash computations.  */
-  NOLENGTH     = 1 << 21,
+  NOLENGTH     = 1 << 22,
 
   /* Randomly initialize the associated values table.  */
-  RANDOM       = 1 << 22,
+  RANDOM       = 1 << 23,
 
   /* --- Informative output --- */
 
   /* Enable debugging (prints diagnostics to stderr).  */
-  DEBUG        = 1 << 23
+  DEBUG        = 1 << 24
 };
 
 /* Class manager for gperf program Options.  */

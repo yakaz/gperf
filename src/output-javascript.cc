@@ -546,8 +546,9 @@ OutputJavascript::output ()
       "/* JavaScript code produced by gperf %s */\n"
       "/* vim:set ft=javascript: */\n",
       version_string);
+  printf ("/* ");
   option.print_options ();
-  printf ("\n");
+  printf (" */\n");
   if (!option[POSITIONS])
     {
       printf ("/* Computed positions: -k'");

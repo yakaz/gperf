@@ -62,7 +62,7 @@ SHELL = /bin/sh
 VPATH = $(srcdir)
 
 OBJECTS  = version.$(OBJEXT) positions.$(OBJEXT) options.$(OBJEXT) keyword.$(OBJEXT) keyword-list.$(OBJEXT) \
-           input.$(OBJEXT) bool-array.$(OBJEXT) hash-table.$(OBJEXT) search.$(OBJEXT) output.$(OBJEXT) output-javascript.$(OBJEXT) main.$(OBJEXT)
+           input.$(OBJEXT) bool-array.$(OBJEXT) hash-table.$(OBJEXT) search.$(OBJEXT) output.$(OBJEXT) output-javascript.$(OBJEXT) output-lua.$(OBJEXT) main.$(OBJEXT)
 LIBS     = ../lib/libgp.a @GPERF_LIBM@
 CPPFLAGS = @CPPFLAGS@ -I. -I$(srcdir)/../lib
 
@@ -93,7 +93,7 @@ INPUT_H = input.h $(KEYWORD_LIST_H)
 BOOL_ARRAY_H = bool-array.h bool-array.icc $(OPTIONS_H)
 HASH_TABLE_H = hash-table.h $(KEYWORD_H)
 SEARCH_H = search.h $(KEYWORD_LIST_H) $(POSITIONS_H) $(BOOL_ARRAY_H)
-OUTPUT_H = output.h output-javascript.h $(KEYWORD_LIST_H) $(POSITIONS_H)
+OUTPUT_H = output.h output-javascript.h output-lua.h $(KEYWORD_LIST_H) $(POSITIONS_H)
 
 version.$(OBJEXT): version.cc $(VERSION_H)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(srcdir)/version.cc
@@ -117,6 +117,8 @@ output.$(OBJEXT): output.cc $(OUTPUT_H) $(OPTIONS_H) $(VERSION_H)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(srcdir)/output.cc
 output-javascript.$(OBJEXT): output-javascript.cc $(OUTPUT_H) $(OPTIONS_H) $(VERSION_H)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(srcdir)/output-javascript.cc
+output-lua.$(OBJEXT): output-lua.cc $(OUTPUT_H) $(OPTIONS_H) $(VERSION_H)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(srcdir)/output-lua.cc
 main.$(OBJEXT): main.cc $(OPTIONS_H) $(INPUT_H) $(SEARCH_H) $(OUTPUT_H)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $(srcdir)/main.cc
 
