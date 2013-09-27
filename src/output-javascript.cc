@@ -262,22 +262,6 @@ output_string (const char *key, int len)
 
 /* ------------------------------------------------------------------------- */
 
-/* Outputs a #line directive, referring to the given line number.  */
-
-static void
-output_line_directive (unsigned int lineno)
-{
-  const char *file_name = option.get_input_file_name ();
-  if (file_name != NULL)
-    {
-      printf ("#line %u ", lineno);
-      output_string (file_name, strlen (file_name));
-      printf ("\n");
-    }
-}
-
-/* ------------------------------------------------------------------------- */
-
 static void
 output_keyword_entry (KeywordExt *temp, int stringpool_index, const char *indent)
 {
